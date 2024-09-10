@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 const register = async (req, res, next) => {
     try {
         const {username, email, password} = req.body;
-        const emailCheck = await User.findOne({email});
+        const emailCheck = await Users.findOne({email});
 
-        if (email)
+        if (emailCheck)
             return res.json({msg: "Email is already used", status: false});
 
         const hashedPassword = await bcrypt.hash(password, 10);
