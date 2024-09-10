@@ -34,10 +34,23 @@ function Register() {
     const handleValidation = () => {
         const {username, email, password, confirmPassword} = values;
         
-        if (password != confirmPassword)
+        if (password !== confirmPassword)
         {
-            toast.error("password and confirm Password should be same.", toastOptions)
+            toast.error("Password and confirm Password should be same.", toastOptions)
+            return false;
+        }else if (username.length < 3)
+        {
+            toast.error("Username should be more than 3 letters.", toastOptions);
+            return false;
+        }else if (password.length < 8) {
+            toast.error("Password should be more than 8 letters.", toastOptions);
+            return false;
+        }else if (email === ""){
+            toast.error("Email is required", toastOptions);
+            return false;
         }
+
+        return true;
     }
     return (
         <>
