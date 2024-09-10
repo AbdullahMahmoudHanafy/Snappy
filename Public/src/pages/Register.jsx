@@ -1,15 +1,44 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Logo from "../Assets/logo.svg"
+import Logo from "../Assets/logo.svg";
+import {ToastContainer, toast} from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("form");
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPAssword: ""
+    })
+
+    const toastOptions = {
+            position: "bottom-right",
+            autoClose: 8000,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
     }
 
-    const handleChange = (event) => {};
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleValidation();
+    }
+
+    const handleChange = (event) => {
+        setValues({...values, [event.target.name]: event.target.value});
+
+    };
+
+    const handleValidation = () => {
+        const {username, email, password, confirmPassword} = values;
+        
+        if (password != confirmPassword)
+        {
+            toast.error("password and confirm Password should be same.", toastOptions)
+        }
+    }
     return (
         <>
             <FormContainer>
@@ -26,6 +55,7 @@ function Register() {
                     <span>Already have an account ? <Link to="/login">Login</Link></span>
                 </form>
             </FormContainer>
+            <ToastContainer />
         </>
     );
 }
@@ -86,6 +116,8 @@ const FormContainer = styled.div`
             &:hover {
                 background-color: #4e0eff;
             }
+
+
         }
         span {
             color: white;
