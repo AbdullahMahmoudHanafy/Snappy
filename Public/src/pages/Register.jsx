@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Logo from "../Assets/logo.svg";
 import {ToastContainer, toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { registerRoute } from "../utils/APIRoutes";
 
 function Register() {
     const [values, setValues] = useState({
@@ -21,9 +23,14 @@ function Register() {
             theme: "dark",
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        handleValidation();
+        if(handleValidation()) {
+            const {username, email, password, confirmPassword} = values;
+            const {data} = await axios.post(registerRoute, {
+                username, email, password,
+            })
+        }
     }
 
     const handleChange = (event) => {
