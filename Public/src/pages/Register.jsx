@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../Assets/logo.svg";
@@ -33,14 +33,14 @@ function Register() {
                 username, email, password,
             })
             if (data.status === false){
+                console.log(true, data.msg);
                 toast.error(data.msg, toastOptions);
             }
 
             if (data.status === true){
                 localStorage.setItem("chat-app-user", JSON.stringify(data.user));
+                navigate("/");
             }
-
-            navigate("/");
         }
     }
 
