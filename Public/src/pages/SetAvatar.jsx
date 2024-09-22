@@ -5,7 +5,7 @@ import loader from "../Assets/loader.gif";
 import {ToastContainer, toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { SetAvatarRoute } from "../utils/APIRoutes";
+import { setAvatarRoute } from "../utils/APIRoutes";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
 
@@ -23,10 +23,30 @@ function SetAvatar() {
         draggable: true,
         theme: "dark",
     };
+
+    useEffect(()=> {
+        if(!localStorage.getItem("chat-app-user")) {
+            navigate("/login")
+        }
+    }, [])
     const setProfilePicture = async () => {
         if (selectedAvatar === undefined)
         {
             toast.error("Please select an avatar", toastOptions);
+        }else {
+            const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+            const {data} = await axios.post(`${setAvatarRoute}/${user._id}`, {
+                image: avatars[selectedAvatar]
+            })
+
+            if (data.isSet) {
+                user.isAvatarImageSet = true;
+                user.avatarImage = data.image;
+                localStorage.setItem("chat-app-user", JSON.stringify(user));
+                navigate("/")
+            }else {
+                toast.error("Error setting the avatar, please try again", toastOptions);
+            }
         }
     };
 
